@@ -11,7 +11,7 @@ This package contains a [Flysystem](https://flysystem.thephpleague.com/) adapter
 You can install the package via composer:
 
 ``` bash
-composer create-project galihlprakoso/flysystem-firebase-storage
+composer require galihlprakoso/flysystem-firebase-storage
 ```
 ## Usage
 
