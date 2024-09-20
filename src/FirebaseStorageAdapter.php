@@ -61,13 +61,15 @@ class FirebaseStorageAdapter implements FilesystemAdapter, ChecksumProvider
 
     public function write(string $path, string $contents, Config $config): void
     {
-
         $objectName = $this->prefixer->prefixPath($path);
+
+        $fileAttributes = $this->mimeType($path);
+        $mimeType = $fileAttributes->mimeType() ?? 'application/octet-stream';
 
         try {
             $this->storageClient->upload($contents, [
                 'name' => $objectName,
-                'metadata' => ['contentType' => 'text/plain'],
+                'metadata' => ['contentType' => $mimeType],
             ]);
         } catch (\Exception $e) {
             throw UnableToWriteFile::atLocation($path, $e->getMessage());
@@ -78,10 +80,13 @@ class FirebaseStorageAdapter implements FilesystemAdapter, ChecksumProvider
     {
         $objectName = $this->applyPathPrefix($path);
 
+        $fileAttributes = $this->mimeType($path);
+        $mimeType = $fileAttributes->mimeType() ?? 'application/octet-stream';
+
         try {
             $this->storageClient->upload($contents, [
                 'name' => $objectName,
-                'metadata' => ['contentType' => 'text/plain'],
+                'metadata' => ['contentType' => $mimeType],
             ]);
         } catch (\Exception $e) {
             throw UnableToWriteFile::atLocation($path, $e->getMessage());
@@ -224,7 +229,7 @@ class FirebaseStorageAdapter implements FilesystemAdapter, ChecksumProvider
 
         return $isDir
             ? new DirectoryAttributes($path)
-            : new FileAttributes($path, $object->size());
+            : new FileAttributes($path, $object->info()['size']);
     }
 
     protected function applyPathPrefix(string $path): string
