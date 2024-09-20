@@ -15,7 +15,7 @@ class FirebaseStorageAdapterTest extends TestCase
         $factory = (new Factory())->withServiceAccount(__DIR__ . '/<service-account-name>.json');
         $storageClient = $factory->createStorage();
 
-        $this->adapter = new FirebaseStorageAdapter($storageClient, 'janjipolitisi.appspot.com');
+        $this->adapter = new FirebaseStorageAdapter($storageClient, '<bucket name>');
     }
 
     public function testUploadFileToFirebaseStorage(): void
