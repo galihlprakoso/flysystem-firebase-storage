@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Adapters;
+namespace galihlprakoso\Adapters;
 
 use Google\Cloud\Storage\Bucket;
-use Kreait\Firebase\Storage;
+use Kreait\Firebase\Contract\Storage;
 use League\Flysystem\ChecksumProvider;
 use League\Flysystem\Config;
 use League\Flysystem\DirectoryAttributes;
@@ -61,36 +61,46 @@ class FirebaseStorageAdapter implements FilesystemAdapter, ChecksumProvider
 
     public function write(string $path, string $contents, Config $config): void
     {
-        $location = $this->applyPathPrefix($path);
+
+        $objectName = $this->prefixer->prefixPath($path);
 
         try {
-            $this->storageClient->upload($location, [
-                'data' => $contents,
-                'predefinedAcl' => 'publicRead',
+            $this->storageClient->upload($contents, [
+                'name' => $objectName,
+                'metadata' => ['contentType' => 'text/plain'],
             ]);
         } catch (\Exception $e) {
-            throw UnableToWriteFile::atLocation($location, $e->getMessage(), $e);
+            throw UnableToWriteFile::atLocation($path, $e->getMessage());
         }
     }
 
     public function writeStream(string $path, $contents, Config $config): void
     {
-        $location = $this->applyPathPrefix($path);
+        $objectName = $this->applyPathPrefix($path);
 
         try {
-            $this->storageClient->upload($location, [
-                'data' => stream_get_contents($contents),
-                'predefinedAcl' => 'publicRead',
+            $this->storageClient->upload($contents, [
+                'name' => $objectName,
+                'metadata' => ['contentType' => 'text/plain'],
             ]);
         } catch (\Exception $e) {
-            throw UnableToWriteFile::atLocation($location, $e->getMessage(), $e);
+            throw UnableToWriteFile::atLocation($path, $e->getMessage());
         }
     }
 
     public function read(string $path): string
     {
-        $object = $this->readStream($path);
-        return $object->getContents();
+        $objectName = $this->prefixer->prefixPath($path);
+
+        try {
+            $object = $this->storageClient->object($objectName);
+
+            $contents = $object->downloadAsString();
+
+            return $contents;
+        } catch (\Exception $e) {
+            throw UnableToReadFile::fromLocation($path, $e->getMessage());
+        }
     }
 
     public function readStream(string $path)
