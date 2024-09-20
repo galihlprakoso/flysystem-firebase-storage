@@ -7,3 +7,10 @@ composer.lock
 
 # OS specific
 .DS_Store/
+
+tests/*.json
+
+.phpunit.cache/
+.phpunit.result.cache
+.php-cs-fixer.cache
+

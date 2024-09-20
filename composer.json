@@ -1,26 +1,39 @@
 {
-    "name": "buonzz/composer-library-template",
-    "description": "Boilerplate package for creating other packages.",
-    "keywords": ["template", "composer", "package"],
-    "license": "DBAD",
+    "name": "galihlprakoso/flysystem-firebase-storage",
+    "description": "FlySystem Firebase Storage.",
+    "keywords": ["firebase", "storage", "flysystem"],
+    "license": "MIT",
     "authors": [
         {
-            "name": "Darwin Biler",
-            "email": "buonzz@gmail.com"
+            "name": "Galih Laras Prakoso",
+            "email": "galihlprakoso@gmail.com"
         }
     ],
     "type": "project",
     "require": {
-		"php": ">=5.4",
+		"php": "^8.2",
         "league/flysystem": "^3.28",
         "kreait/firebase-php": "^7.15"
     },
 	"require-dev": {
-		"phpunit/phpunit": "5.2.*"
+		"phpunit/phpunit": "11.3.*",
+        "pestphp/pest": "^3.1",
+        "phpspec/prophecy-phpunit": "^2.2",
+        "friendsofphp/php-cs-fixer": "^3.64"
     },
 	"autoload": {
         "psr-4": {
-            "Buonzz\\Template\\": "src/"
+            "galihlprakoso\\Adapters\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "galihlprakoso\\Adapters\\Tests\\": "tests"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
         }
     }
 }
