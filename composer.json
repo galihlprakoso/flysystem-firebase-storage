@@ -9,7 +9,7 @@
             "email": "galihlprakoso@gmail.com"
         }
     ],
-    "type": "project",
+    "type": "library",
     "require": {
 		"php": "^8.2",
         "league/flysystem": "^3.28",
