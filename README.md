@@ -55,3 +55,9 @@ Storage::extend('firebase-storage', function (Application $app, array $config) {
     );
 });
 ```
+## Support My Work
+<div align="center">
+  <a href="https://buymeacoffee.com/ghackdev" target="_blank">
+    <img src="https://github.com/galihlprakoso/logseq-plugin-assistseq-ai-assistant/raw/master/images/buymeacoffee.png" width="200" />
+  </a>
+</div>
