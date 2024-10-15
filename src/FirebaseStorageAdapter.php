@@ -258,4 +258,18 @@ class FirebaseStorageAdapter implements FilesystemAdapter, ChecksumProvider
             throw UnableToCopyFile::fromLocationTo($sourceLocation, $destinationLocation, $e);
         }
     }
+
+    public function getUrl(string $path): string {
+        $objectName = $this->prefixer->prefixPath($path);        
+
+        try {
+            $object = $this->storageClient->object($objectName);            
+
+            $contents = $object->signedUrl(new \DateTime('+' . 3600 . ' seconds'));                 
+
+            return $contents;
+        } catch (\Exception $e) {
+            throw UnableToReadFile::fromLocation($path, $e->getMessage());
+        }
+    }
 }
