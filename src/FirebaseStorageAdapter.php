@@ -272,4 +272,18 @@ class FirebaseStorageAdapter implements FilesystemAdapter, ChecksumProvider
             throw UnableToReadFile::fromLocation($path, $e->getMessage());
         }
     }
+
+    public function getTemporaryUrl(string $path, \DateTimeInterface $expiration, $options = []): string {
+        $objectName = $this->prefixer->prefixPath($path);        
+
+        try {
+            $object = $this->storageClient->object($objectName);            
+
+            $contents = $object->signedUrl($expiration);
+
+            return $contents;
+        } catch (\Exception $e) {
+            throw UnableToReadFile::fromLocation($path, $e->getMessage());
+        }
+    }
 }
